@@ -45,19 +45,19 @@ Para criarmos um Kernel do SO em Rust, precisamos criar um executável que possa
 
 Essa publicação descreve os passos necessários para criar um binário do Rust independente e explica por que dos passos serem necessários. se você só estiver interessado em um exemplo mínimo, você pode **[ir para o resumo](#summary)**.
 
-## Disabling the Standard Library
-By default, all Rust crates link the [standard library], which depends on the operating system for features such as threads, files, or networking. It also depends on the C standard library `libc`, which closely interacts with OS services. Since our plan is to write an operating system, we can not use any OS-dependent libraries. So we have to disable the automatic inclusion of the standard library through the [`no_std` attribute].
+## Desabilitando a biblioteca padrão
+Por padrão, todas as crates do Rust se vinculam com a [biblioteca padrão], que depende dos recursos do Sistema operacional, como as _threads_, arquivos ou rede. Também depende da biblioteca padrão do C `libc`, que interage estreitamente com os serviços do SO. Já que nosso plano é escrever um sistema operacional, nós não podemos usar nenhuma biblioteca que dependa do SO. Portanto, temos que desabilitar a inclusão automática da biblioteca através do [atributo `no_std`] 
 
-[standard library]: https://doc.rust-lang.org/std/
-[`no_std` attribute]: https://doc.rust-lang.org/1.30.0/book/first-edition/using-rust-without-the-standard-library.html
+[biblioteca padrão]: https://doc.rust-lang.org/std/
+[atributo `no_std`]: https://doc.rust-lang.org/1.30.0/book/first-edition/using-rust-without-the-standard-library.html
 
-We start by creating a new cargo application project. The easiest way to do this is through the command line:
+Começamos pela criação de um novo projeto de aplicação do cargo. A maneira mais fácil é através da linha de comando:
 
 ```
 cargo new blog_os --bin --edition 2018
 ```
 
-I named the project `blog_os`, but of course you can choose your own name. The `--bin` flag specifies that we want to create an executable binary (in contrast to a library) and the `--edition 2018` flag specifies that we want to use the [2018 edition] of Rust for our crate. When we run the command, cargo creates the following directory structure for us:
+Eu nomeei o projeto de `blog_os`, mas é claro que você pode escolher seu próprio nome. A flag `--bin` específica que queremos criar um binário executável (em contraste com um biblioteca) e a flag ‘--edition 2018’ específica que queremos usar a [edição 2018] do Rust para nossa crate. Quando nós rodamos o comando, cargo cria a seguinte estrutura de diretório para nós:
 
 [2018 edition]: https://doc.rust-lang.org/nightly/edition-guide/rust-2018/index.html
 
@@ -68,9 +68,9 @@ blog_os
     └── main.rs
 ```
 
-The `Cargo.toml` contains the crate configuration, for example the crate name, the author, the [semantic version] number, and dependencies. The `src/main.rs` file contains the root module of our crate and our `main` function. You can compile your crate through `cargo build` and then run the compiled `blog_os` binary in the `target/debug` subfolder.
+O `Cargo.toml` contém a configuração da crate, por exemplo, o nome da crate, o autor, o número da [versão semântica], e as dependências. o arquivo `src/main.rs` contém o módulo root de nosso crate e nossa função `main`. Você pode compilar sua crate através do `cargo build` e então executar o binário `blog_os` compilado no sub diretório `target/debug`. 
 
-[semantic version]: https://semver.org/
+[versão semântica]: https://semver.org/
 
 ### The `no_std` Attribute
 
