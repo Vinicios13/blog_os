@@ -46,7 +46,7 @@ Para criarmos um Kernel do SO em Rust, precisamos criar um executável que possa
 Essa publicação descreve os passos necessários para criar um binário do Rust independente e explica por que dos passos serem necessários. se você só estiver interessado em um exemplo mínimo, você pode **[ir para o resumo](#summary)**.
 
 ## Desabilitando a biblioteca padrão
-Por padrão, todas as crates do Rust se vinculam com a [biblioteca padrão], que depende dos recursos do Sistema operacional, como as _threads_, arquivos ou rede. Também depende da biblioteca padrão do C `libc`, que interage estreitamente com os serviços do SO. Já que nosso plano é escrever um sistema operacional, nós não podemos usar nenhuma biblioteca que dependa do SO. Portanto, temos que desabilitar a inclusão automática da biblioteca através do [atributo `no_std`] 
+Por padrão, todas as crates do Rust se vinculam com a [biblioteca padrão], que depende dos recursos do Sistema operacional, como as _threads_, arquivos ou rede. Também depende da biblioteca padrão do C `libc`, que interage estreitamente com os serviços do SO. Já que nosso plano é escrever um sistema operacional, nós não podemos usar nenhuma biblioteca que dependa do SO. Portanto, temos que desabilitar a inclusão automática da biblioteca através do [atributo `no_std`].
 
 [biblioteca padrão]: https://doc.rust-lang.org/std/
 [atributo `no_std`]: https://doc.rust-lang.org/1.30.0/book/first-edition/using-rust-without-the-standard-library.html
@@ -72,9 +72,9 @@ O `Cargo.toml` contém a configuração da crate, por exemplo, o nome da crate, 
 
 [versão semântica]: https://semver.org/
 
-### The `no_std` Attribute
+### O Atributo `no_std`
 
-Right now our crate implicitly links the standard library. Let's try to disable this by adding the [`no_std` attribute]:
+No momento, nossa crate vincula implicitamente a biblioteca padrão. Vamos tentar desabilitar isso adicionando o [atributo `no_std`]:
 
 ```rust
 // main.rs
@@ -86,7 +86,7 @@ fn main() {
 }
 ```
 
-When we try to build it now (by running `cargo build`), the following error occurs:
+Quanto tentamos buildar agora (rodando `cargo build`), o seguinte erro ocorre:
 
 ```
 error: cannot find macro `println!` in this scope
@@ -96,12 +96,12 @@ error: cannot find macro `println!` in this scope
   |     ^^^^^^^
 ```
 
-The reason for this error is that the [`println` macro] is part of the standard library, which we no longer include. So we can no longer print things. This makes sense, since `println` writes to [standard output], which is a special file descriptor provided by the operating system.
+O motivo desse erro é que o [macro `println`] faz parte da biblioteca padrão,  que não mais incluímos.  Então não podemos mais printar coisas. Isso faz sentido, já que `println` escreve para a [saída padrão], que é um descritor de arquivos especial provido pelo sistema operacional.
 
-[`println` macro]: https://doc.rust-lang.org/std/macro.println.html
-[standard output]: https://en.wikipedia.org/wiki/Standard_streams#Standard_output_.28stdout.29
+[macro `println`]: https://doc.rust-lang.org/std/macro.println.html
+[saída padrão]: https://en.wikipedia.org/wiki/Standard_streams#Standard_output_.28stdout.29
 
-So let's remove the printing and try again with an empty main function:
+Então vamos remover o println e tentar novamente com a função main vazia: 
 
 ```rust
 // main.rs
@@ -117,7 +117,7 @@ error: `#[panic_handler]` function required, but not found
 error: language item required, but not found: `eh_personality`
 ```
 
-Now the compiler is missing a `#[panic_handler]` function and a _language item_.
+Agora falta ao compilador uma  função `#[panic_handler]`  e um  _language item_.
 
 ## Panic Implementation
 
